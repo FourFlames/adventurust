@@ -12,11 +12,6 @@ impl Position {
     }
 }
 
-enum EvenOdd {
-    Even(i32),
-    Odd(i32),
-}
-
 fn main() {
     let mut position = Position { x: 0, y: 0 };
     
@@ -27,24 +22,15 @@ fn main() {
         match user_answer[0].as_str() {
             "x" => return,
             "go" => position.shift(
-                user_answer[1].parse::<i32>().expect("input an actual int32 dumbass"),
-                user_answer[2].parse::<i32>().expect("input an actual int32 dumbass"),
+                user_answer[1].parse::<i32>().expect("input an actual int32 my good sir/madame/other"),
+                user_answer[2].parse::<i32>().expect("input an actual int32 my good sir/madame/other"),
             ),
             "look" => println!("That is the point {}, {}",
-                position.x + user_answer[1].parse::<i32>().expect("input an actual int32 dumbass"),
-                position.y + user_answer[2].parse::<i32>().expect("input an actual int32 dumbass"),
+                position.x + user_answer[1].parse::<i32>().expect("input an actual int32 mygoodsir/madame/other"),
+                position.y + user_answer[2].parse::<i32>().expect("input an actual int32 mygoodsir/madame/other"),
             ),
            _ => { println!("Fuck you"); return },
         }
-        let even_odd = match user_answer[1].parse::<i32>().expect("an actual int32 dumbass") {
-            i if  i%2       ==0 => EvenOdd::Even(i),
-            i if (i%2).abs()==1 => EvenOdd::Odd(i),
-            _ => {println!("Something awful happened!"); EvenOdd::Even(69)}
-        };
-        match even_odd {
-            EvenOdd::Even(i) => println!("{} is even", i),
-            EvenOdd::Odd(i)  => println!("{} is odd", i),
-        };
         if user_answer[0] == "x" {return;}
     }
 }
