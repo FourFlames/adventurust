@@ -2,9 +2,6 @@ use std::io::{self, stdin};
 use std::collections::HashMap;
 
 #[derive(Clone)]
-#[derive(Eq)]
-#[derive(PartialEq)]
-#[derive(Hash)]
 pub enum Command {
     Nav(Nav),
     Quit,
@@ -12,9 +9,6 @@ pub enum Command {
 }
 
 #[derive(Clone)]
-#[derive(Eq)]
-#[derive(PartialEq)]
-#[derive(Hash)]
 pub enum Nav {
     Shift,
     EnterExit,
@@ -22,7 +16,7 @@ pub enum Nav {
 }
 
 pub struct CommandInterface {
-    hash_cmd_s: HashMap<Command, Vec<String>>
+    hash_cmd_s: HashMap<String, Command>
 }
 
 impl CommandInterface {
@@ -40,42 +34,28 @@ impl CommandInterface {
     }
 
     fn parse_command(&self, input_s: &str) -> Command {
-        match self.hash_cmd_s.iter().find(
-                    |&(_k, vec)| vec.iter().any( |s| s == input_s )
-                )
-            {
-                Some(cmd) => cmd.0.clone(),
-                None => Command::Invalid(input_s.to_string()),
-            }
+        match self.hash_cmd_s.get(input_s) {
+            Some(command) => command.clone(),
+            None => Command::Invalid(input_s.to_string()),
+        }
     }
 }
 
 
 pub fn initialize_commands() -> CommandInterface {
-    let mut s_commands: HashMap<Command, Vec<String>> = HashMap::new();
-    s_commands.insert(
-        Command::Quit,
-        vec!["x", "exit", "quit"].iter().map(
-            |str| str.to_string()
-        ).collect()
+    let mut s_commands: HashMap<String, Command> = HashMap::new();
+    ["x", "exit", "quit"].iter().for_each(
+        |s| {s_commands.insert(s.to_string(), Command::Quit);}
     );
-    s_commands.insert(
-        Command::Nav(Nav::Shift),
-        vec!["go"].iter().map(
-            |str| str.to_string()
-        ).collect()
+    ["go"].iter().for_each(
+        |s| {s_commands.insert(s.to_string(), Command::Nav(Nav::Shift));}
     );
-    s_commands.insert(
-        Command::Nav(Nav::EnterExit),
-        vec!["in", "out"].iter().map(
-            |str| str.to_string()
-        ).collect()
+    ["in", "out"].iter().for_each(
+        |s| {s_commands.insert(s.to_string(), Command::Nav(Nav::EnterExit));}
     );
-    s_commands.insert(
-        Command::Nav(Nav::Look),
-        vec!["l", "look"].iter().map(
-            |str| str.to_string()
-        ).collect()
+    ["l", "look"].iter().for_each(
+        |s| {s_commands.insert(s.to_string(), Command::Nav(Nav::Look));}
     );
+
     CommandInterface { hash_cmd_s: s_commands }
 }
