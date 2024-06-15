@@ -6,9 +6,9 @@ use player_io::{Command, Nav};
 fn main() {
     let position = navigation::Position::new(0, 0, false);
     let files = file_io::initialize().unwrap();
-    let commands = player_io::initialize_commands();
+    let mut commands = player_io::initialize_commands();
     for line in files.read_lines_of("commands").unwrap() {
-        println!("{}", line);
+        commands.update_commands(line);
     };
     
     loop {
